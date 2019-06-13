@@ -53,7 +53,6 @@ $ composer require iivannov/branchio
 ``` php
 $client = new \Iivannov\Branchio\Client(KEY, SECRET);
 $link = $client->getLink($url);
-
 ```
 ### Create new link
 ```
@@ -64,8 +63,8 @@ $link->setChannel('foo')
     ->setAlias('foobar123')
     ->setData([
         '$always_deeplink' => 'true',
-        '$deeplink_path' => 'go-to-user-123'
-        'user_id' => 123
+        '$deeplink_path' => 'go-to-user-123',
+        'user_id' => 123,
     ]);
     
 $client = new \Iivannov\Branchio\Client(KEY, SECRET);

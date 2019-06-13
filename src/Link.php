@@ -3,21 +3,29 @@
 namespace Iivannov\Branchio;
 
 
+use InvalidArgumentException;
+use stdClass;
+
 class Link
 {
 
     /**
+     * Also know as utm_source
+     *
      * @var string
      */
     public $channel;
 
-
     /**
+     * Also know as utm_medium
+     *
      * @var string
      */
     public $feature;
 
     /**
+     * Also known as utm_campaign
+     *
      * @var string
      */
     public $campaign;
@@ -47,8 +55,10 @@ class Link
      */
     public $data;
 
-
-    private $properties = [
+    /**
+     * @var array
+     */
+    private static $properties = [
         'channel',
         'feature',
         'campaign',
@@ -63,8 +73,8 @@ class Link
     public function __construct($json = null)
     {
         if ($json) {
-            if (!$json instanceof \stdClass) {
-                throw new \InvalidArgumentException();
+            if (!$json instanceof stdClass) {
+                throw new InvalidArgumentException('Invalid json format');
             }
             $this->makeFromLinkObject($json);
         }
@@ -146,12 +156,12 @@ class Link
         return $this;
     }
 
-    public function toArray($ignore = [])
+    public function toArray($ignore = []): array
     {
         $array = [];
 
-        foreach ($this->properties as $property) {
-            if(in_array($property, $ignore)) {
+        foreach (self::$properties as $property) {
+            if(in_array($property, $ignore, true)) {
                 continue;
             }
             $array[$property] = $this->{$property};
@@ -160,9 +170,9 @@ class Link
         return $array;
     }
 
-    private function makeFromLinkObject(\stdClass $json)
+    private function makeFromLinkObject(stdClass $json)
     {
-        foreach ($this->properties as $property) {
+        foreach (self::$properties as $property) {
             if (isset($json->{$property})) {
                 $this->{$property} = $json->{$property};
             }
